@@ -1,11 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
 	"log"
 	"os"
 )
@@ -18,13 +16,18 @@ func loadDotenv() {
 }
 
 func main() {
-	session, err := mgo.Dial(os.Getenv("MONGO_HOST") + ":27017")
+	loadDotenv()
+
+	se, err := mgo.Dial(os.Getenv("MONGO_HOST") + ":27017")
 	if err != nil {
 		panic(err)
 	}
-	defer session.Close()
-	session.SetMode(mgo.Monotonic, true)
+	defer se.Close()
+	se.SetMode(mgo.Monotonic, true)
 
-	fmt.Println("vim-godoji")
-	c := session.DB("test").C("items")
+	r := gin.Default()
+
+	SetItemRouter(r, se)
+
+	r.Run()
 }
