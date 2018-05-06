@@ -17,6 +17,7 @@ func SetItemRouter(r *gin.Engine, session *mgo.Session) {
 
 	r.GET("/", getRoot)
 	r.GET("/items", getItems)
+	r.GET("/shirts", getShirts)
 	r.POST("/items", postItem)
 	r.PUT("/items", putItem)
 	r.POST("/delete_item", deleteItem)
@@ -35,9 +36,19 @@ func getItems(c *gin.Context) {
 	c.JSON(200, items)
 }
 
+func getShirts(c *gin.Context) {
+	items := []item.Item{}
+	err := cl.Find(bson.M{"type": 1}).All(&items)
+	if err != nil {
+		log.Fatal(err)
+	}
+	c.JSON(200, items)
+}
+
 func postItem(c *gin.Context) {
 	item := item.Item{}
 	item.Name = c.PostForm("Name")
+	item.Type, _ = strconv.Atoi(c.PostForm("Type"))
 	item.ImageURL = c.PostForm("ImageURL")
 	item.Price, _ = strconv.Atoi(c.PostForm("Price"))
 	item.Description = c.PostForm("Description")
