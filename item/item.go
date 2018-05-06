@@ -4,10 +4,11 @@ import "fmt"
 
 // Item represents the item
 type Item struct {
-	Name        string
-	ImageURL    string
-	Price       int
-	Description string
+	Name        string `bson: "Name"`
+	Type        int    `bson: "Type"`
+	ImageURL    string `bson: "ImageURL"`
+	Price       int    `bson: "Price"`
+	Description string `bson: "Description"`
 }
 
 // GetPrice returns string

@@ -37,9 +37,10 @@ func getItems(c *gin.Context) {
 
 func postItem(c *gin.Context) {
 	item := item.Item{}
-	item.Name = c.PostForm("name")
-	item.Price, _ = strconv.Atoi(c.PostForm("price"))
-	item.Description = c.PostForm("description")
+	item.Name = c.PostForm("Name")
+	item.ImageURL = c.PostForm("ImageURL")
+	item.Price, _ = strconv.Atoi(c.PostForm("Price"))
+	item.Description = c.PostForm("Description")
 
 	err := cl.Insert(&item)
 	if err != nil {
@@ -52,7 +53,7 @@ func postItem(c *gin.Context) {
 }
 
 func putItem(c *gin.Context) {
-	if name, newName := c.PostForm("name"), c.PostForm("newName"); name != "" && newName != "" {
+	if name, newName := c.PostForm("Name"), c.PostForm("NewName"); name != "" && newName != "" {
 		selector := bson.M{"name": name}
 		update := bson.M{"$set": bson.M{"name": newName}}
 		err := cl.Update(selector, update)
@@ -67,7 +68,7 @@ func putItem(c *gin.Context) {
 }
 
 func deleteItem(c *gin.Context) {
-	if name := c.PostForm("name"); name != "" {
+	if name := c.PostForm("Name"); name != "" {
 		selector := bson.M{"name": name}
 		err := cl.Remove(selector)
 		if err != nil {
