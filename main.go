@@ -71,7 +71,11 @@ func main() {
 
 	r := gin.Default()
 
-	r.GET("sdk", sdkHandler)
+	r.LoadHTMLGlob("templates/**/*.tmpl")
+	r.GET("/sdk", sdkHandler)
+	r.GET("/show", func(c *gin.Context) {
+		c.HTML(200, "posts/index.tmpl", gin.H{})
+	})
 
 	SetItemRouter(r, se)
 
